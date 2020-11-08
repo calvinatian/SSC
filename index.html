@@ -1,43 +1,84 @@
 <html>
     <head>
         <title> Spizzirri Stats Calculator </title>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"> </script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"> </script>
     </head>
 
     <script>
         
         function binomial_normal_approx() 
-        {
-            var x1 = Number(document.getElementById("x1").value);
-            var x2 = Number(document.getElementById("x2").value);
-            var n = Number(document.getElementById("n").value);
-            var p = Number(document.getElementById("p").value);
+        {   
+            var x1 = Number(document.getElementById("bi_x1").value);
+            var x2 = Number(document.getElementById("bi_x2").value);
+            var n = Number(document.getElementById("bi_n").value);
+            var p = Number(document.getElementById("bi_p").value);
 
             var leftside = ((x1 - 1/2) - n * p) / (Math.sqrt(n * p * (1 - p)));
             var rightside = ((x2 + 1/2) - n * p) / Math.sqrt(n * p * (1 - p));
-            
-            document.getElementById("Answer").innerHTML = "p(" + leftside + ") < Z < p(" + rightside + ")";
 
+            //document.getElementById("Steps").innerHTML = "p(" + leftside + ") < Z < p(" + rightside + ")";           
+            document.getElementById("binomial_normal_approx_answer").innerHTML = "p(" + leftside + ") < Z < p(" + rightside + ")";
+            
+        }
+
+        function confidence_interval_pop_mean()
+        {
+            var x = Number(document.getElementById("conf_pop_mean_x").value);
+            var za = Number(document.getElementById("conf_pop_mean_za").value);
+            var o = Number(document.getElementById("conf_pop_mean_o").value);
+            var n = Number(document.getElementById("conf_pop_mean_n").value);
+
+            var leftside = (x - za * (o / Math.sqrt(n)))
+            var rightside = (x + za * (o / Math.sqrt(n)))
+
+            document.getElementById("confidence_interval_pop_answer").innerHTML = leftside + " < u < " + rightside;
+            
         }
 
         
         
     </script>
 
-    <h1> Normal Approximation of a Binomial </h1>
-    <form onsubmit = "binomial_normal_approx()">
-        <label> x1: </label>
-        <input type = "number" id = "x1" name = "x1">
-        <label> x2: </label>
-        <input type = "number" id = "x2" name = "x2">
-        <label> n: </label>
-        <input type = "number" id = "n" name = "n">
-        <label> p: </label>
-        <input type = "number" id = "p" name = "p">
-        <button onclick = "binomial_normal_approx()" type = "button"> Submit </button>
-    </form>
+    <div id = "binomial_normal_approx_form">
+        <h1 style= "text-align: center;"> Spizzirri Stats Calculator </h1>
+        <h2> Normal Approximation of a Binomial </h2>
+        <p style="float: left"> $$p(x_1\le\ X\le\ x_2)\approx\ p(\frac{x_1-np}{\sqrt{npq}}\le\ Z\le\frac{x_2-np}{\sqrt{npq}})$$ </p>
+        <!-- I'm sorry about the below but I'm lazy -->
+        <br> </br> <br> </br> <br> </br>
+        <form>
+            <label> x1: </label>
+            <input type = "number" id = "bi_x1" name = "x1">
+            <label> x2: </label>
+            <input type = "number" id = "bi_x2" name = "x2">
+            <label> n: </label>
+            <input type = "number" id = "bi_n" name = "n">
+            <label> p: </label>
+            <input type = "number" id = "bi_p" name = "p">
+            <button onclick = "binomial_normal_approx()" type = "button"> Submit </button>
+        </form>
+        <p id = "binomial_normal_approx_answer"> </p>    
+    </div>
 
-    <p id = "Steps"> </p>
-    <p id = "Answer"> </p>
-
+    <div id = "confidence_interval_pop_form">
+        <h2> Confidence Interval </h2>
+        <p style="float:left"> $$\bar{x}-z_\frac{\alpha}{2}\ast\frac{\sigma}{\sqrt n}<\mu<\bar{x}+z_\frac{\alpha}{2}\ast\frac{\sigma}{\sqrt n}$$ </p>
+        <!-- I'm sorry about the below but I'm lazy -->
+        <br> </br> <br> </br> <br> </br>
+        <form>
+            <label> x: </label>
+            <input type = "number" id = "conf_pop_mean_x" name = "x">
+            <label> z a/2: </label>
+            <input type = "number" id = "conf_pop_mean_za" name = "x2">
+            <label> σ: </label>
+            <input type = "number" id = "conf_pop_mean_o" name = "n">
+            <label> n: </label>
+            <input type = "number" id = "conf_pop_mean_n" name = "p">
+            <button onclick = "confidence_interval_pop_mean()" type = "button"> Submit </button>
+        </form>
+        <p id = "confidence_interval_pop_answer"> </p>
+    
+    </div>
+    
 
 </html>
